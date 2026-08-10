@@ -1,0 +1,78 @@
+# ─── Quartus: Compile-Datenbanken & Zwischenstände ───────────────────────────
+db/
+incremental_db/
+.qsys_edit/
+greybox_tmp/
+hc_output/
+hps_isw_handoff/
+timing/
+qdb/
+# *.qws = Workspace-State (welche Fenster offen sind)
+*.qws
+*.bak
+*.orig
+*.rej
+*.rpt
+*.summary
+*.smsg
+*.pin
+*.jdi
+*.done
+*.qws.lock
+*.ammdb
+*.cmp.*
+*.map.*
+*.qarlog
+c5_pin_model_dump.txt
+PLLJ_PLLSPE_INFO.txt
+
+# ─── Quartus: Build-Ergebnisse ───────────────────────────────────────────────
+output_files/
+*.sof
+*.pof
+*.rbf
+*.jic
+*.jam
+*.jbc
+*.svf
+*.cdf
+
+# ─── Simulation (ModelSim/Questa, iverilog) ──────────────────────────────────
+simulation/
+work/
+transcript
+vsim.wlf
+vsim_stacktrace.vstf
+modelsim.ini
+*.vstf
+*.wlf
+*.vcd
+*.fst
+*.ghw
+*.svo
+*.sdo
+*.xrf
+*.sft
+*.vvp
+# iverilog-Output (vvp-Script) bzw. Verilator
+src/sim
+obj_dir/
+
+# ─── Assembler/Compiler-Output (jjasm.py, jc.py) ─────────────────────────────
+# .hex wird reproduzierbar aus den .s/.j-Quellen erzeugt
+*.lst
+*.hex
+
+# ─── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# ─── Archive & Editor-Kram ───────────────────────────────────────────────────
+*.tar.gz
+*.zip
+*~
+.vscode/
+.idea/
+.DS_Store

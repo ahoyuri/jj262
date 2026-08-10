@@ -1,0 +1,114 @@
+#1 
+ALU_MULU
+ALU_MULH
+Also unsigned und signed obere multiplikation.
+generell multiplikation wegen laufzeit checken.
+
+Gedanke:
+0x0000–0x00FF   Zero-Page (M4K, schnell)      — die 6502-Idee
+0x0100–0xEFFF   RAM
+0xF000–0xFFFF   I/O-Fenster (4 KB, Peripherie)
+
+
+#2
+pc reg hat halt und das verhindert das pc erhöht wird.
+muss vom externen interupt kommen.
+
+
+#3
+für mehr port etc. für IO
+interface board_if;
+    logic [9:0] SW;
+    logic [3:0] KEY;
+    logic [9:0] LEDR;
+    logic [6:0] HEX0, HEX1, HEX2, HEX3;
+    // später: GPU-Pins, Audio, ...
+endinterface
+
+
+#4
+align_fault ist nur einen phase lang kombinatorisch aktiv
+könnte durchfallen
+durch letch lösbar.
+
+
+ISA wichtig:
+JMP 0x10 an Adresse 0x0100 → landet auf 0x0110
+
+
+in src ausführen:
+$ iverilog -g2012 -o sim -s tb jj262_pkg.sv cu/*.sv loader/*.sv memory/*.sv \
+  memory/peripherie/*.sv path/*.sv jj262_top.sv tb.sv && vvp sim
+cu/cu_decode.sv:29: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+cu/cu_decode.sv:29: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+cu/cu_decode.sv:29: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+cu/cu_decode.sv:29: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+cu/cu_decode.sv:29: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+cu/cu_decode.sv:29: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+cu/cu_decode.sv:29: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+cu/cu_decode.sv:29: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+cu/cu_decode.sv:29: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/alu.sv:11: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/alu.sv:11: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/alu.sv:11: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/alu.sv:11: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/alu.sv:11: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/alu.sv:11: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/alu.sv:11: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/alu.sv:11: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/alu.sv:11: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/alu.sv:11: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/datapath.sv:55: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/datapath.sv:55: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/datapath.sv:55: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/datapath.sv:55: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/datapath.sv:55: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/datapath.sv:99: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/datapath.sv:99: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/datapath.sv:99: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+path/datapath.sv:99: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+cu/cu_decode.sv:42: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+cu/cu_decode.sv:368: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+cu/cu_decode.sv:402: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+cu/cu_decode.sv:458: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+path/alu.sv:13: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+path/datapath.sv:56: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+path/datapath.sv:66: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+path/datapath.sv:100: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+path/datapath.sv:107: vvp.tgt sorry: Case unique/unique0 qualities are ignored.
+WARNING: loader/rom.sv:33: $readmemh(boot.hex): Not enough words in the file for the requested range [0:4095].
+ pc    iw    akk   ptr   Z C S V  done ph
+0000  0580  0000  0000  0 0 0 0   1   0
+0000  0580  0000  0000  0 0 0 0   1   0
+0001  0105  0000  0000  0 0 0 0   1   0
+0002  9003  0005  0000  0 0 0 0   0   0
+0002  9003  0005  0000  0 0 0 0   1   1
+0005  5002  0005  0000  0 0 0 0   1   0
+0006  2600  0007  0000  0 0 0 0   0   0
+0006  2600  0007  0000  0 0 0 0   1   1
+0003  5001  0007  0000  0 0 0 0   1   0
+0004  0000  0008  0000  0 0 0 0   1   0
+0005  5002  0008  0000  0 0 0 0   1   0
+0006  2600  000a  0000  0 0 0 0   0   0
+0006  2600  000a  0000  0 0 0 0   1   1
+xxxx  xxxx  000a  0000  0 0 0 0   1   0
+xxxx  xxxx  000a  0000  0 0 0 0   1   0
+xxxx  xxxx  000a  0000  0 0 0 0   1   0
+xxxx  xxxx  000a  0000  0 0 0 0   1   0
+xxxx  xxxx  000a  0000  0 0 0 0   1   0
+xxxx  xxxx  000a  0000  0 0 0 0   1   0
+xxxx  xxxx  000a  0000  0 0 0 0   1   0
+tb.sv:18: $finish called at 471000 (1ps)
+
+
+
+
+
+compiler:
+python3 jc.py prog.j -o prog.s
+python3 jjasm.py prog.s -o boot.hex -d 4096
+
+julius@Julix:~/Dokumente/q2_projekts/test/src/compiler$ python3 jc.py snake.j -o snake.s
+snake.s: 1113 Zeilen Assembler
+julius@Julix:~/Dokumente/q2_projekts/test/src/compiler$ python3 jjasm.py snake.s -o boot.hex -d 4096
+boot.hex: 1192 Woerter, hoechste Adresse 0x05A6
