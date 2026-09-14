@@ -14,13 +14,15 @@ Autor: Julius Jackisch
 
 ---
 
-## 1. Ueberblick
+## 1. Überblick
 
 <!-- Quelle: src/jj262_pkg.sv:1-22, src/jj262_top.sv -->
+Der JJ262 ist eine 16-Bit-Harvard CPU mit Akkumulator-Architektur.
+Ein Wort ist 16 Bit und jeder Befehl ist ein Wort lang.
+Als Arbeitsregister gibt es nur AKK und PTR, dazu kommen SP, PC und das Flagregister.
+Die meisten Befehle werden in einem Takt ausgeführt.
+Auf dem DE1-Board läuft die CPU derzeit mit 25MHz.
 
-TODO — Eckdaten in drei Saetzen: 16-Bit-Wortbreite, Harvard (getrenntes
-Befehls-ROM und Daten-RAM), Akkumulator-Architektur, ein Befehl = ein Wort,
-Takt 25 MHz (50 MHz halbiert).
 
 ## 2. Programmiermodell
 
