@@ -1,7 +1,6 @@
 # JJ262 — Instruction Set Architecture
 
 <!--
-  GERUEST. Jeder Abschnitt nennt die Quelle, aus der er belegt werden muss.
   Regel fuer dieses Dokument: die Hardware ist die Wahrheit, nicht dieses
   Dokument. Wenn beim Schreiben eine Abweichung auffaellt -> unter
   "Offene Punkte" notieren, nicht stillschweigend die schoenere Variante
@@ -9,7 +8,7 @@
 -->
 
 Status: Entwurf
-Gilt fuer: Commit `TODO`
+Gilt für: Commit `TODO`
 Autor: Julius Jackisch
 
 ---
@@ -26,10 +25,33 @@ Auf dem DE1-Board läuft die CPU derzeit mit 25MHz.
 
 ## 2. Programmiermodell
 
-<!-- Quelle: src/path/register.sv, src/jj262_pkg.sv:212-217 -->
+<!-- Quelle: src/path/register.sv, src/jj262_pkg.sv -->
+Es gibt vier Register, alle 16 Bit breit. Nach einem Reset sind alle
+Register und das Flagregister 0 (Interrupts sind damit gesperrt).
 
-TODO — Register einzeln: AKK, PTR, SP, PC. Je Register: Breite, Aufgabe,
-wer es schreiben darf, Verhalten nach Reset.
+**AKK** — Akkumulator. Erster Operand und Ziel aller ALU-Operationen.
+
+**PTR** — Zeigerregister. Basis für
+PTR-relative Sprünge und das einzige Register mit Byte-Zugriffen
+(LBPAK, LBUPAK, SBPT) und eigener Arithmetik (INCPT, DECPT).
+Achtung: Der Assembler überschreibt PTR, wenn er einen zu weiten Sprung umbaut.
+
+**SP** — Stackpointer. Basis für `[SP+XY]` (lokale Variablen).
+Der Stack wächst nach unten: PUSH verringert SP zuerst um 2 und schreibt
+dann nach `[SP]`, SP zeigt also immer auf das zuletzt abgelegte Wort.
+PUSH/POP/CALL/RET/INT/RETI verändern SP immer um 2. Zusätzlich ist SP
+direkt ladbar (MILSP/MIHSP, MASP, MPSP, ADDSP, SUBSP).
+
+**PC** — Befehlszähler. Enthält die Adresse des gerade ausgeführten
+Befehls und zählt in Befehlen (ROM ist wortadressiert). Nach jedem
+Befehl +1, sofern der Befehl ihn nicht selbst lädt: Sprünge, CALL,
+RET, RETI, INT, JMPP und die Interrupt-Injektion.
+
+Gemeinsam für AKK, PTR und SP: Alle drei lassen sich per Immediate laden,
+über das Adressrechenwerk (Basis + XY) untereinander kopieren und als
+Basis für Wort-Loads `[Basis+XY]` verwenden. Ziel eines Wort-Loads ist
+AKK oder PTR. Wort-Stores und ALU-Speicheroperanden gibt es nur mit
+PTR oder SP als Basis.
 
 ### 2.1 Flagregister
 
