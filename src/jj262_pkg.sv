@@ -135,7 +135,7 @@ package jj262_pkg;
     ALU_TST  = 5'h11,   // AND ohne Writeback
     ALU_MUL  = 5'h12,   // AKK = low16 (AKK * SRC)   mehrtaktig
     ALU_MULH = 5'h13    // AKK = high16(AKK * SRC)   mehrtaktig
-    // 5'h13 .. 5'h1F frei
+    // 5'h14 .. 5'h1F frei
   } alu_op_e;
 
   // --------------------------------------------------------------------------
